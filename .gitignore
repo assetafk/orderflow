@@ -4,6 +4,7 @@ __pycache__/
 .env
 .venv/
 services/auth/.venv/
+services/order/.venv/
 venv/
 *.egg-info/
 dist/

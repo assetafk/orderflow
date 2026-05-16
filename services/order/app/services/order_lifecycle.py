@@ -38,8 +38,11 @@ def validate_transition(
 ) -> None:
     if not can_transition(current, target):
         allowed = VALID_TRANSITIONS.get(current, set())
-        allowed_names = ", ".join(s.value for s in sorted(allowed, key=lambda x: x.value))
+        allowed_names = ", ".join(
+            s.value for s in sorted(allowed, key=lambda x: x.value)
+        )
+        hint = allowed_names or "none (terminal state)"
         raise ValueError(
-            f"Cannot transition from '{current.value}' to '{target.value}'. "
-            f"Allowed: {allowed_names or 'none (terminal state)'}",
+            f"Cannot transition from '{current.value}' "
+            f"to '{target.value}'. Allowed: {hint}",
         )

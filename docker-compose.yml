@@ -63,6 +63,25 @@ services:
     expose:
       - "8000"
 
+  order-service:
+    build:
+      context: ./services/order
+    environment:
+      DATABASE_URL: postgresql+asyncpg://orderflow:orderflow@postgres:5432/orderflow
+      KAFKA_BOOTSTRAP_SERVERS: kafka:29092
+      KAFKA_ORDER_TOPIC: order.events
+      JWT_SECRET_KEY: ${JWT_SECRET_KEY:-change-me-in-production-use-openssl-rand-hex-32}
+      JWT_ALGORITHM: HS256
+    depends_on:
+      postgres:
+        condition: service_healthy
+      kafka:
+        condition: service_started
+      auth-service:
+        condition: service_started
+    expose:
+      - "8000"
+
   nginx:
     image: nginx:alpine
     ports:
@@ -71,6 +90,7 @@ services:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
     depends_on:
       - auth-service
+      - order-service
 
 volumes:
   postgres_data:
