@@ -46,6 +46,8 @@ async def publish_order_event(
     user_id: int,
     status: str,
     payload: dict | None = None,
+    *,
+    topic: str | None = None,
 ) -> None:
     if _producer is None:
         raise RuntimeError("Kafka producer is not started")
@@ -59,7 +61,7 @@ async def publish_order_event(
         "payload": payload or {},
     }
     await _producer.send_and_wait(
-        settings.kafka_order_topic,
+        topic or settings.kafka_order_topic,
         value=event,
         key=str(order_id).encode("utf-8"),
     )

@@ -14,6 +14,7 @@ from app.schemas.order import (
     OrderResponse,
     OrderStatusUpdate,
 )
+from app.core.config import settings
 from app.services.kafka_producer import publish_order_event
 from app.services.order_lifecycle import validate_transition
 
@@ -74,6 +75,7 @@ async def create_order(
             "currency": order.currency,
             "items": order.items,
         },
+        topic=settings.kafka_order_created_topic,
     )
     return order
 

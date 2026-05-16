@@ -5,6 +5,7 @@ __pycache__/
 .venv/
 services/auth/.venv/
 services/order/.venv/
+services/payment/.venv/
 venv/
 *.egg-info/
 dist/
